@@ -1,0 +1,11 @@
+# Experiments
+color_choices
+
+# Original data
+hygdata_v42.csv.gz
+
+# Previous iterations
+star_map_3d_wider.py
+star_map_3d_working.py
+star_map_3d_r.py
+star_map_3d.py
