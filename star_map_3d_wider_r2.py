@@ -9,10 +9,10 @@ import pandas as pd
 import os
 
 
-DIST_MAX = 200  # in parsecs
-MAG_MIN = 10  # apparent magnitude
+DIST_MAX = 650  # in parsecs
+MAG_MIN = 6.5  # apparent magnitude
 GLOBE_MAX = 20 # max plot size
-GLOBE_MIN = 2 # min plot size
+GLOBE_MIN = 1.5 # min plot size
 CONSTELLATION = None  # show constellations
 #  Ref https://astronexus.com/projects/hyg-details
 
@@ -102,15 +102,6 @@ def create_star_map(DIST_MAX, MAG_MIN):
     # Get list of unique constellations
     constellations = sorted(stars['con'].dropna().unique().tolist())
     print(f"Found {len(constellations)} constellations")
-    
-    # # If CONSTELLATION is set, apply initial filter
-    # if CONSTELLATION != None:
-    #     stars_filtered = stars[stars['con'] == CONSTELLATION]
-    #     print(f"Filtering to constellation: {CONSTELLATION}")
-    # else:
-    #     stars_filtered = stars
-    
-    # print(f"Displaying {len(stars_filtered)} stars within {DIST_MAX} parsecs ({DIST_MAX*3.26:.1f} light-years)")
     
     # Create sphere mesh for boundary
     u = np.linspace(0, 2 * np.pi, 50)
