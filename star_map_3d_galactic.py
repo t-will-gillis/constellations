@@ -151,7 +151,7 @@ def create_star_map(DIST_MAX, MAG_MIN):
         name='Sol'
     ))
     
-    # Add extra data points
+    # Add Galactic Plane
     fig.add_trace(go.Scatter3d(
         x=x_plane,
         y=y_plane,
@@ -170,9 +170,47 @@ def create_star_map(DIST_MAX, MAG_MIN):
         x=x_plane,
         y=y_plane,
         z=z_plane,
-        opacity=0.4,
+        opacity=0.2,
         name='Surface'
     ))
+
+    # Galactic Center in parsecs
+    # gc_dist = 8200  # pc
+    gc_dist = DIST_MAX * 2  # scale to fit in view
+    gc_ra = 266.4167  # degrees
+    gc_dec = -29.0078  # degrees
+
+    x_gc, y_gc, z_gc = cartesian_coords(
+        np.array([gc_dist]),
+        np.array([gc_ra]),
+        np.array([gc_dec])
+    )
+
+    fig.add_trace(go.Scatter3d(
+        x=x_gc, y=y_gc, z=z_gc,
+        mode='markers+text',
+        marker=dict(
+            size=3,
+            color='red',
+            symbol='diamond'
+        ),
+        text=['Galactic Center (8200 pc)'],
+        textposition='top center',
+        name='Galactic Center',
+        hoverinfo='text'
+    ))
+
+    '''
+    fig.add_trace(go.Scatter3d(
+        x=[0, x_gc[0]],
+        y=[0, y_gc[0]],
+        z=[0, z_gc[0]],
+        mode='lines+markers',
+        marker=dict(size=1, color='red'),
+        line=dict(width=1, color='red'),
+        name='Direction to Galactic Center'
+    ))
+    '''
 
     # Create traces for each constellation + "All"
     constellation_options = ['All'] + constellations
