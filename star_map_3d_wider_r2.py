@@ -9,8 +9,9 @@ import pandas as pd
 import os
 
 
-DIST_MAX = 650  # in parsecs
-MAG_MIN = 6.5  # apparent magnitude
+DIST_MAX = 750  # in parsecs
+MAG_MIN = 5.5  # apparent magnitude
+APPARENT_MAG = True  # size by apparent magnitude if True, else absolute magnitude
 GLOBE_MAX = 20 # max plot size
 GLOBE_MIN = 1.5 # min plot size
 CONSTELLATION = None  # show constellations
@@ -165,7 +166,7 @@ def create_star_map(DIST_MAX, MAG_MIN):
             text = f"<b>{name}</b><br>"
             text += f"Constellation: {star['con']}<br>" if pd.notna(star['con']) else ""
             text += f"Distance: {star['dist']:.2f} pc ({star['dist']*3.26:.1f} ly)<br>"
-            text += f"Magnitude: {star['mag']:.2f}<br>"
+            text += f"Apparent Magnitude: {star['mag']:.2f}<br>"
             text += f"Absolute Magnitude: {star['absmag']:.2f}<br>"
             text += f"Spectral Type: {star['spect'] if pd.notna(star['spect']) else 'Unknown'}"
             hover_text.append(text)
@@ -173,15 +174,12 @@ def create_star_map(DIST_MAX, MAG_MIN):
         # # Size stars by apparent magnitude
         mag_min = stars_con['mag'].min()
         mag_max = stars_con['mag'].max()
-        # sizes = GLOBE_MAX - (stars_con['mag'].values - mag_min) / (mag_max - mag_min) * (GLOBE_MAX - GLOBE_MIN)
-        # sizes = np.clip(sizes, GLOBE_MIN, GLOBE_MAX)
 
         # Size stars by magnitude (apparent or absolute) using natural log
-        apparent_mag = True
-        if (apparent_mag):
+        if (APPARENT_MAG):
             sizes = GLOBE_MAX * np.exp(-0.26 * (stars_con['mag'].values + 2))
         else:
-            sizes = GLOBE_MAX * (np.exp(-0.26 * (stars_con['absmag'].values + 15) * .75) + 2)
+            sizes = GLOBE_MAX * np.exp(-0.26 * (stars_con['absmag'].values + 8) * .6)
         sizes = np.clip(sizes, GLOBE_MIN, GLOBE_MAX)
         
         # Color stars by B-V color index
