@@ -12,8 +12,8 @@ import os
 DIST_MAX = 750  # in parsecs
 MAG_MIN = 5.5  # apparent magnitude
 APPARENT_MAG = True  # size by apparent magnitude if True, else absolute magnitude
-GLOBE_MAX = 20 # max plot size
-GLOBE_MIN = 1.5 # min plot size
+GLOBE_MAX = 12 # max plot size
+GLOBE_MIN = 1 # min plot size
 CONSTELLATION = None  # show constellations
 #  Ref https://astronexus.com/projects/hyg-details
 
@@ -126,7 +126,7 @@ def create_star_map(DIST_MAX, MAG_MIN):
     # Initialize figure with empty data
     fig = go.Figure()
     
-    # Add sphere boundary (always visible)
+    # SPHERE TRACE: Add sphere boundary (always visible)
     fig.add_trace(go.Surface(
         x=x_sphere, y=y_sphere, z=z_sphere,
         opacity=0.075,
@@ -136,7 +136,7 @@ def create_star_map(DIST_MAX, MAG_MIN):
         name='Boundary'
     ))
     
-    # Add Sol at origin
+    # SOL TRACE: Add Sol at origin
     fig.add_trace(go.Scatter3d(
         x=[0], y=[0], z=[0],
         mode='markers',
@@ -151,7 +151,7 @@ def create_star_map(DIST_MAX, MAG_MIN):
         name='Sol'
     ))
     
-    # Add Galactic Plane
+    # GALACTIC TRACE: Add Galactic Plane
     fig.add_trace(go.Scatter3d(
         x=x_plane,
         y=y_plane,
@@ -166,12 +166,15 @@ def create_star_map(DIST_MAX, MAG_MIN):
         hoverinfo='skip'
     ))
 
+    # GALACTIC TRACE: Add Galactic Plane surface (optional)
     fig.add_trace(go.Mesh3d(
         x=x_plane,
         y=y_plane,
         z=z_plane,
-        opacity=0.2,
-        name='Surface'
+        opacity=0.1,
+        name='Galactic Surface',
+        showlegend=True,
+        hoverinfo='skip'
     ))
 
     # Galactic Center in parsecs
@@ -186,6 +189,7 @@ def create_star_map(DIST_MAX, MAG_MIN):
         np.array([gc_dec])
     )
 
+    # GALACTIC CENTER TRACE: Add Galactic Center
     fig.add_trace(go.Scatter3d(
         x=x_gc, y=y_gc, z=z_gc,
         mode='markers+text',
@@ -299,7 +303,7 @@ def create_star_map(DIST_MAX, MAG_MIN):
     buttons = []
     for i, constellation in enumerate(constellation_options):
         # Each constellation has 2 traces (3D + projected) starting after sphere and Sol (2 traces)
-        visible_array = [True, True]  # Sphere and Sol always visible
+        visible_array = [True, True, True, True, True]  # Boundary, Sol, Galactic Plane Scatter3d, Galactic Plane Mesh3d, Galactic Center
         
         for j in range(len(constellation_options)):
             if j == i:
@@ -307,12 +311,14 @@ def create_star_map(DIST_MAX, MAG_MIN):
             else:
                 visible_array.extend([False, False])  # Hide both traces
         
+        con_label = 'All stars' if constellation == 'All' else constellation
+        con_stars = stars if constellation == 'All' else stars[stars['con'] == constellation]
         button = dict(
             label=constellation,
             method='update',
             args=[
                 {'visible': visible_array},
-                {'title.text': f'Interactive 3D Star Map from Sol<br><sub>Showing {len(stars)} stars brighter than {MAG_MIN} apparent magnitude<br>Within {DIST_MAX} parsecs ({DIST_MAX*3.26:.0f} light-years) of Sol<br>Constellation: {CONSTELLATION if CONSTELLATION else "All stars"}</sub>'}
+                {'title.text': f'Interactive 3D Star Map from Sol<br><sub>Showing {len(con_stars)} stars brighter than {MAG_MIN} apparent magnitude<br>Within {DIST_MAX} parsecs ({DIST_MAX*3.26:.0f} light-years) of Sol<br>Constellation: {con_label}</sub>'}
             ]
         )
         buttons.append(button)

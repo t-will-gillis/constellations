@@ -9,11 +9,11 @@ import pandas as pd
 import os
 
 
-DIST_MAX = 750  # in parsecs
-MAG_MIN = 5.5  # apparent magnitude
+DIST_MAX = 5  # in parsecs
+MAG_MIN = 20  # apparent magnitude
 APPARENT_MAG = True  # size by apparent magnitude if True, else absolute magnitude
-GLOBE_MAX = 20 # max plot size
-GLOBE_MIN = 1.5 # min plot size
+GLOBE_MAX = 12 # max plot size
+GLOBE_MIN = 1 # min plot size
 CONSTELLATION = None  # show constellations
 #  Ref https://astronexus.com/projects/hyg-details
 
