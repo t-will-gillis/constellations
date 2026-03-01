@@ -311,14 +311,12 @@ def create_star_map(DIST_MAX, MAG_MIN):
             else:
                 visible_array.extend([False, False])  # Hide both traces
         
-        con_label = 'All stars' if constellation == 'All' else constellation
-        con_stars = stars if constellation == 'All' else stars[stars['con'] == constellation]
         button = dict(
             label=constellation,
             method='update',
             args=[
                 {'visible': visible_array},
-                {'title.text': f'Interactive 3D Star Map from Sol<br><sub>Showing {len(con_stars)} stars brighter than {MAG_MIN} apparent magnitude<br>Within {DIST_MAX} parsecs ({DIST_MAX*3.26:.0f} light-years) of Sol<br>Constellation: {con_label}</sub>'}
+                {'title.text': f'Interactive 3D Star Map from Sol<br><sub>Showing {len(stars)} stars brighter than {MAG_MIN} apparent magnitude<br>Within {DIST_MAX} parsecs ({DIST_MAX*3.26:.0f} light-years) of Sol<br>Constellation: {CONSTELLATION if CONSTELLATION else "All stars"}</sub>'}
             ]
         )
         buttons.append(button)
