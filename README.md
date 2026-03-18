@@ -16,8 +16,8 @@ Plots the local stellar neighborhood based on distance and apparent magnitude fr
 - Each star's plot color is based on its approximate B-V color.
 - Optionally plots the galactic plane and orientation to the galactic center.
 
-### Future Options
-- [ ] Plot stars' apparent magnitudes using a new reference star:
-  - With each star's cartesian coordinates, the distance of the star to any reference point can be calculated
-  - Then taking each star's absolute magnitude, apparent magnitude, and distance from sol, the star's apparent magnitude at the new reference point can be calculated
+### Future / Optional Features to Add
+- [ ] Plot all stars' apparent magnitudes from the perspective of a new reference star:
+  - With each star's cartesian coordinates, the distance from the star to any reference point can be calculated
+  - Then taking each star's absolute magnitude, apparent magnitude, and distance from sol, the star's apparent magnitude at the new reference point can be calculated and plotted
 - [ ] Augment or replace the HYG stellar catalog with some subset of the Gaia catalog (how large of a set depends on my next computer)
